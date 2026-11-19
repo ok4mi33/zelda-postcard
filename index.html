@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Zelda 8-Bit Postcard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --night: #0a0a2e;
+    --night-2: #12124a;
+    --primary: #8fd3ff;
+    --primary-deep: #4da3ff;
+    --rose: #ffb3d9;
+    --lavender: #b8a9ff;
+    --coral: #ff8fa3;
+    --heart: #ff5d73;
+    --gutter: clamp(8px, min(4vw, 3.2dvh), 34px);
+    --pad: clamp(16px, min(6vw, 4.2dvh), 34px);
+    --body: clamp(7px, 2.05vw, 10px);
+    --small: clamp(6px, 1.7vw, 8px);
+    --large: clamp(9px, 2.9vw, 13px);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { min-height: 100%; }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    padding:
+      calc(var(--gutter) + env(safe-area-inset-top, 0px))
+      calc(var(--gutter) + env(safe-area-inset-right, 0px))
+      calc(var(--gutter) + env(safe-area-inset-bottom, 0px))
+      calc(var(--gutter) + env(safe-area-inset-left, 0px));
+    background:
+      radial-gradient(circle at 50% 30%, #1b1b58 0%, var(--night) 62%, #05051a 100%);
+    color: var(--primary);
+    font-family: "Press Start 2P", monospace;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, #fff8 100%, transparent 100%),
+      radial-gradient(1px 1px at 82% 26%, #fff6 100%, transparent 100%),
+      radial-gradient(1px 1px at 27% 76%, #fff5 100%, transparent 100%),
+      radial-gradient(1px 1px at 68% 84%, #fff7 100%, transparent 100%),
+      radial-gradient(1px 1px at 91% 61%, #fff5 100%, transparent 100%),
+      radial-gradient(1px 1px at 44% 9%, #fff4 100%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .stage {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 420px;
+    min-width: 0;
+    display: flex;
+  }
+
+  .card {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 100%;
+    background: linear-gradient(165deg, var(--night-2), var(--night) 55%, #08081f);
+    border: 4px solid var(--primary-deep);
+    box-shadow:
+      0 0 0 4px #05051a,
+      0 0 0 6px var(--primary-deep),
+      0 0 24px 4px #4da3ff55,
+      0 14px 34px #000a;
+    animation: borderBlink 1.4s steps(1, end) infinite;
+  }
+
+  @keyframes borderBlink {
+    0%, 69% {
+      border-color: var(--primary-deep);
+      box-shadow:
+        0 0 0 4px #05051a,
+        0 0 0 6px var(--primary-deep),
+        0 0 24px 4px #4da3ff55,
+        0 14px 34px #000a;
+    }
+    70%, 100% {
+      border-color: var(--primary);
+      box-shadow:
+        0 0 0 4px #05051a,
+        0 0 0 6px var(--primary),
+        0 0 34px 8px #8fd3ff88,
+        0 14px 34px #000a;
+    }
+  }
+
+  .scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      #0000 0px,
+      #0000 2px,
+      #00000026 3px,
+      #00000026 4px
+    );
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .content {
+    position: relative;
+    width: 100%;
+    padding: var(--pad);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, min(4.5vw, 3dvh), 28px);
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    font-size: var(--small);
+    letter-spacing: 1px;
+    line-height: 1.6;
+    color: var(--lavender);
+  }
+
+  .topbar .spark { color: var(--primary); animation: twinkle 1s steps(1, end) infinite; }
+
+  @keyframes twinkle { 0%, 49% { opacity: 1; } 50%, 100% { opacity: .15; } }
+
+  .hero { text-align: center; }
+
+  .art {
+    width: 100%;
+    padding: clamp(14px, 5vw, 22px) 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 3vw, 16px);
+    font-size: clamp(30px, 11vw, 52px);
+    line-height: 1.1;
+    background: radial-gradient(ellipse at 50% 60%, #2b2b7a 0%, #141444 70%);
+    border: 2px solid var(--primary-deep);
+    box-shadow: inset 0 0 0 2px #05051a;
+    text-shadow: 0 3px 0 #0008;
+  }
+
+  .art span { display: inline-block; }
+  .art span:nth-child(1) { animation: float 2s ease-in-out infinite; }
+  .art span:nth-child(2) { animation: float 2s ease-in-out .4s infinite; }
+  .art span:nth-child(3) { animation: float 2s ease-in-out .8s infinite; }
+
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+  .nameplate {
+    margin-top: clamp(14px, 4vw, 22px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .nameplate .dear { font-size: var(--small); letter-spacing: 2px; color: var(--lavender); }
+
+  .nameplate h1 {
+    margin: 0;
+    font-size: clamp(13px, 5vw, 20px);
+    line-height: 1.6;
+    letter-spacing: 2px;
+    color: var(--primary);
+    text-shadow: 3px 3px 0 var(--primary-deep);
+    overflow-wrap: anywhere;
+  }
+
+  .divider {
+    height: 8px;
+    background: repeating-linear-gradient(to right, var(--primary-deep) 0 5px, transparent 5px 10px);
+    opacity: .7;
+  }
+
+  .messages { display: flex; flex-direction: column; }
+
+  .dialogue {
+    position: relative;
+    display: none;
+    margin: 0;
+    padding: clamp(12px, 3.5vw, 16px) clamp(10px, 3vw, 14px) 60px;
+    border: 2px solid #4da3ff88;
+    background: #8fd3ff08;
+    box-shadow: inset 0 0 0 2px #05051a55;
+    cursor: pointer;
+  }
+
+  .dialogue.is-active { display: block; animation: dialogueIn .2s steps(3, end); }
+
+  @keyframes dialogueIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .advance {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: inherit;
+    font-size: 14px;
+    color: var(--primary);
+    background: transparent;
+    border: 2px solid var(--primary-deep);
+    cursor: pointer;
+    animation: cursorBlink 1s steps(1, end) infinite;
+  }
+
+  .advance:hover, .advance:focus-visible {
+    background: var(--primary);
+    color: #05051a;
+    outline: none;
+  }
+
+  @keyframes cursorBlink {
+    0%, 49% { opacity: 1; transform: translateX(0); }
+    50%, 100% { opacity: .35; transform: translateX(2px); }
+  }
+
+  .dialogue p {
+    margin: 0;
+    font-size: var(--body);
+    line-height: 2.1;
+    letter-spacing: .3px;
+  }
+
+  .dialogue--love p { color: var(--primary); }
+  .dialogue--hope p { color: var(--rose); }
+
+  .dialogue--core {
+    border-color: var(--primary);
+    background: #8fd3ff14;
+    padding-bottom: 44px;
+  }
+
+  .dialogue--core .advance {
+    width: 34px;
+    height: 34px;
+    right: 5px;
+    bottom: 5px;
+    font-size: 11px;
+  }
+
+  .dialogue--core.is-active {
+    animation: dialogueIn .2s steps(3, end), coreGlow 1.6s steps(1, end) infinite .2s;
+  }
+
+  .dialogue--core p {
+    color: var(--primary);
+    font-size: clamp(9px, 3.1vw, 13px);
+    line-height: 2;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0 var(--primary-deep);
+  }
+
+  @keyframes coreGlow {
+    0%, 49% { box-shadow: 0 0 20px 4px #8fd3ff44, inset 0 0 0 2px #05051a55; }
+    50%, 100% { box-shadow: 0 0 6px 1px #8fd3ff11, inset 0 0 0 2px #05051a55; }
+  }
+
+  .ask {
+    padding: clamp(14px, 4vw, 20px);
+    border: 2px solid var(--primary-deep);
+    background: #12124a99;
+    box-shadow: inset 0 0 0 2px #05051a;
+    display: none;
+    flex-direction: column;
+    gap: clamp(14px, 4vw, 20px);
+  }
+
+  .ask.is-revealed { display: flex; animation: dialogueIn .25s steps(3, end); }
+
+  .question {
+    margin: 0;
+    font-size: clamp(14px, 5.5vw, 22px);
+    line-height: 1.9;
+    letter-spacing: 2px;
+    text-align: center;
+    color: var(--primary);
+    text-shadow: 3px 3px 0 var(--primary-deep);
+  }
+
+  .buttons { display: flex; gap: clamp(10px, 3vw, 16px); }
+
+  .btn {
+    flex: 1;
+    min-width: 0;
+    min-height: 52px;
+    padding: 12px 6px;
+    font: inherit;
+    font-size: var(--body);
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: 2px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    animation: menuBlink 1s steps(1, end) infinite;
+  }
+
+  .btn--yes { animation-delay: 0s; }
+  .btn--no { animation-delay: .5s; }
+
+  @keyframes menuBlink {
+    0%, 49.9% {
+      background: var(--primary);
+      color: var(--night);
+      box-shadow: 0 0 10px #8fd3ff88;
+    }
+    50%, 100% {
+      background: transparent;
+      color: var(--primary);
+      box-shadow: none;
+    }
+  }
+
+  .btn:hover, .btn:focus-visible {
+    animation-play-state: paused;
+    background: var(--rose);
+    color: var(--night);
+    border-color: var(--rose);
+    outline: none;
+  }
+
+  .btn:active { transform: translateY(2px); }
+
+  .dialogue, .advance, .btn, .screen .reset {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: clamp(12px, 3.5vw, 16px);
+    border-top: 2px solid var(--primary-deep);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: var(--small);
+    letter-spacing: 1px;
+    color: var(--lavender);
+  }
+
+  .hearts { color: var(--heart); margin-left: 5px; letter-spacing: 2px; }
+  .slot b { color: var(--rose); font-weight: normal; }
+
+  .screen {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    padding: var(--pad);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(14px, 4vw, 22px);
+    text-align: center;
+    background: #05051af2;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .18s steps(2, end);
+  }
+
+  .screen.is-visible { opacity: 1; visibility: visible; }
+
+  .screen .headline {
+    font-size: clamp(12px, 4.5vw, 20px);
+    line-height: 1.9;
+    letter-spacing: 2px;
+    animation: pulse 1s steps(1, end) infinite;
+  }
+
+  @keyframes pulse { 0%, 49% { opacity: 1; } 50%, 100% { opacity: .35; } }
+
+  .screen.win .headline { color: var(--rose); text-shadow: 3px 3px 0 #6a3a7a; }
+  .screen.lose .headline { color: var(--coral); text-shadow: 3px 3px 0 #6a2f55; }
+
+  .screen .sub { font-size: var(--body); line-height: 2.2; color: var(--lavender); }
+  .screen.win .sub { color: var(--primary); }
+
+  .countdown {
+    font-size: clamp(40px, 15vw, 72px);
+    line-height: 1;
+    color: var(--primary);
+    text-shadow: 4px 4px 0 var(--primary-deep);
+  }
+
+  .screen .reset {
+    font: inherit;
+    font-size: var(--body);
+    letter-spacing: 1px;
+    min-height: 48px;
+    padding: 12px 16px;
+    color: var(--night);
+    background: var(--primary);
+    border: 2px solid var(--primary);
+    cursor: pointer;
+    animation: pulse 1.2s steps(1, end) infinite;
+  }
+
+  .screen .reset:hover { background: var(--rose); border-color: var(--rose); }
+
+  @media (orientation: landscape) and (max-height: 560px) {
+    .content { gap: clamp(10px, min(3vw, 2.5dvh), 16px); }
+    .art { font-size: clamp(24px, 7vw, 38px); padding: 12px 8px; }
+    .nameplate { margin-top: 10px; }
+    .dialogue p { line-height: 1.9; }
+    .screen { gap: 10px; }
+    .countdown { font-size: clamp(32px, 10vh, 54px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card, .btn, .art span, .topbar .spark, .advance,
+    .dialogue.is-active, .dialogue--core.is-active, .ask.is-revealed,
+    .screen .headline, .screen .reset {
+      animation: none;
+    }
+  }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <article class="card" id="card">
+      <div class="scanlines"></div>
+
+      <div class="content">
+        <header class="topbar">
+          <span>ZELDA / POSTAL 8-BITS</span>
+          <span class="spark">&#10022;</span>
+          <span>NES &middot; OOT</span>
+        </header>
+
+        <section class="hero">
+          <div class="art">
+            <span>🗡️</span><span>❤️</span><span>🛡️</span>
+          </div>
+          <div class="nameplate">
+            <span class="dear">PARA</span>
+            <h1>Camila</h1>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="messages" id="messages" aria-live="polite" aria-label="Mensajes de la postal">
+          <div class="dialogue dialogue--love">
+            <p>Te quiero mucho.<br />Eu gosto muito de você.</p>
+          </div>
+
+          <div class="dialogue dialogue--love">
+            <p>Quiero compartir muchas cosas contigo.<br />Quiero seguir siendo tu pareja de baile.<br />Quiero salir contigo.</p>
+          </div>
+
+          <div class="dialogue dialogue--core">
+            <p>Quiero tomar el riesgo.</p>
+          </div>
+
+          <div class="dialogue dialogue--hope">
+            <p>Yo sé que, a pesar de todas las cosas que pasan, me gustaría seguir tomando el riesgo de seguir intentando y avanzando juntos.</p>
+          </div>
+
+          <div class="dialogue dialogue--hope">
+            <p>Sé que necesitas tiempo para sanar y trabajar en ti, pero quiero acompañarte durante ese proceso.</p>
+          </div>
+          <button class="advance" id="advanceBtn" type="button" aria-label="Siguiente mensaje">▶</button>
+        </section>
+
+        <section class="ask" id="askSection">
+          <p class="question">¿ACEPTAS?</p>
+          <div class="buttons">
+            <button class="btn btn--yes" id="yesBtn" type="button">[SÍ ❤️]</button>
+            <button class="btn btn--no" id="noBtn" type="button">[NO]</button>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <div>HP <span class="hearts">&#9829;&#9829;&#9829;&#9829;&#9829;</span></div>
+          <div>SAVE SLOT <b>01</b></div>
+        </footer>
+      </div>
+
+      <div class="screen win" id="winScreen" aria-live="polite">
+        <div class="headline">MISIÓN<br />INICIADA</div>
+        <div class="sub">PLAYER 2 HA ACEPTADO<br />LA AVENTURA CONTINÚA CONTIGO ❤️</div>
+        <button class="reset" data-reset type="button">[ CONTINUAR ]</button>
+      </div>
+
+      <div class="screen lose" id="loseScreen" aria-live="polite">
+        <div class="headline">GAME OVER</div>
+        <div class="sub">REINTENTANDO EN</div>
+        <div class="countdown" id="countdown">9</div>
+        <button class="reset" data-reset type="button">[ PRESS START ]</button>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    let audioCtx;
+
+    function ensureAudio() {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      if (!audioCtx) audioCtx = new AC();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
+    ["pointerdown", "touchstart", "keydown"].forEach((evt) => {
+      document.addEventListener(evt, ensureAudio, { once: true, passive: true });
+    });
+
+    function playTone(freq, time, duration, type, volume, slideTo) {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type || "square";
+      osc.frequency.setValueAtTime(freq, time);
+      if (slideTo) {
+        osc.frequency.exponentialRampToValueAtTime(Math.max(1, slideTo), time + duration);
+      }
+      gain.gain.setValueAtTime(0.0001, time);
+      gain.gain.exponentialRampToValueAtTime(volume || 0.045, time + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(time);
+      osc.stop(time + duration + 0.03);
+    }
+
+    function playAdvance() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      playTone(523.25, t, 0.07, "square", 0.04);
+      playTone(783.99, t + 0.06, 0.09, "square", 0.035);
+    }
+
+    function playReveal() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+        playTone(f, t + i * 0.1, 0.18, "square", 0.04);
+      });
+    }
+
+    function playYes() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      [392, 493.88, 587.33, 783.99, 659.25, 783.99, 987.77].forEach((f, i) => {
+        playTone(f, t + i * 0.11, 0.22, "square", 0.04);
+      });
+    }
+
+    function playNo() {
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      [392, 349.23, 293.66, 220].forEach((f, i) => {
+        playTone(f, t + i * 0.22, 0.34, "triangle", 0.055);
+      });
+    }
+
+    const winScreen = document.getElementById("winScreen");
+    const loseScreen = document.getElementById("loseScreen");
+    const countdownEl = document.getElementById("countdown");
+    let timer = null;
+
+    function hideScreens() {
+      winScreen.classList.remove("is-visible");
+      loseScreen.classList.remove("is-visible");
+      countdownEl.textContent = "9";
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function startCountdown() {
+      let remaining = 9;
+      timer = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(timer);
+          timer = null;
+          countdownEl.textContent = "0";
+          return;
+        }
+        countdownEl.textContent = String(remaining);
+      }, 1000);
+    }
+
+    const messagesEl = document.getElementById("messages");
+    const messages = Array.from(document.querySelectorAll(".dialogue"));
+    const advanceBtn = document.getElementById("advanceBtn");
+    const askSection = document.getElementById("askSection");
+    let step = 0;
+    let lastAdvanceAt = 0;
+
+    function renderStep() {
+      messages.forEach((message, index) => {
+        message.classList.toggle("is-active", index === step);
+      });
+      const active = messages[step];
+      if (active) active.appendChild(advanceBtn);
+      advanceBtn.setAttribute(
+        "aria-label",
+        step === messages.length - 1 ? "Mostrar pregunta final" : "Siguiente mensaje"
+      );
+    }
+
+    function advance() {
+      const now = Date.now();
+      if (now - lastAdvanceAt < 250 || askSection.classList.contains("is-revealed")) return;
+      lastAdvanceAt = now;
+      if (step < messages.length - 1) {
+        step += 1;
+        renderStep();
+        playAdvance();
+        return;
+      }
+      askSection.classList.add("is-revealed");
+      advanceBtn.remove();
+      askSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      playReveal();
+    }
+
+    advanceBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      advance();
+    });
+
+    messages.forEach((message) => {
+      message.addEventListener("click", advance);
+    });
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    messagesEl.addEventListener("touchstart", (event) => {
+      touchStartX = event.changedTouches[0].clientX;
+      touchStartY = event.changedTouches[0].clientY;
+    }, { passive: true });
+
+    messagesEl.addEventListener("touchend", (event) => {
+      const deltaX = event.changedTouches[0].clientX - touchStartX;
+      const deltaY = event.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) advance();
+    }, { passive: true });
+
+    renderStep();
+
+    document.getElementById("yesBtn").addEventListener("click", () => {
+      hideScreens();
+      playYes();
+      winScreen.classList.add("is-visible");
+    });
+
+    document.getElementById("noBtn").addEventListener("click", () => {
+      hideScreens();
+      playNo();
+      loseScreen.classList.add("is-visible");
+      startCountdown();
+    });
+
+    document.querySelectorAll("[data-reset]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        playAdvance();
+        hideScreens();
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") hideScreens();
+      const onButton = event.target instanceof Element && event.target.closest("button");
+      if (
+        (event.key === "ArrowRight" || event.key === " ") &&
+        !onButton &&
+        !askSection.classList.contains("is-revealed")
+      ) {
+        event.preventDefault();
+        advance();
+      }
+    });
+  </script>
+</body>
+</html>
